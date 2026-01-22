@@ -23,14 +23,13 @@ int main(){
  
   srand(time(NULL));// inicializa o gerador de numeros aleatorios com base no tempo atual do pc
     
-    int atributo; // variavel para guardar
-    int escolhaj = 0;
+    int atributo[2]; // variavel para guardar
     int vencedor[2];
     cartas carta[2];
     int escolhaPC;
     int indice = 0;
-    int pontosjogador;
-    int pontospc;
+    int pontosjogador = 0;
+    int pontospc = 0;
 
     // Carta 1 (computador) recebe valores aleatórios
     escolhaPC = 1; // só para indicar que é a carta do PC
@@ -44,8 +43,12 @@ int main(){
 
 
     char estados[] = {'A','B'};// array com as letras pra formar o codigo do estado
-    int menu;
-  
+    int menu = 0;
+    int sair = 0;
+
+ while (!sair) {   // mantém o programa rodando até sair
+
+
   printf("***Menu*** \n");
   printf("1.Iniciar jogo! \n");
   printf("2.Regras\n");
@@ -121,11 +124,18 @@ case 1:
     printf("6.Pib per capta é: \n");
     printf("7.o nivel de poder total é: \n");
     printf("-------------------------\n");  
+    
     for (int i = 0; i < 2; i++) {
     printf("Escolha um atributo para comparar (1 a 7): ");
-    scanf("%d", &atributo);
+    scanf("%d", &atributo[i]);
 
-    switch (atributo) {
+    // Verifica se o jogador escolheu o mesmo atributo duas vezes
+      if (i == 1 && atributo[0] == atributo[1]) {
+        printf("Você escolheu 2 atributos iguais!! Tente novamente...\n");
+        i--; // volta uma posição para pedir de novo
+        continue;
+    }
+      switch (atributo[i]) {
         case 1:
             printf("População foi escolhida!\n");
             vencedor[i] = (carta[0].populacao > carta[1].populacao) ? 1 : 2;
@@ -160,6 +170,7 @@ case 1:
             break;
     }
   }   
+
     //mostrar a carta cadastrada do jogador     
     printf("\n--- Carta do PC ---\n");
     printf("População: %u \n", carta[1].populacao);
@@ -177,19 +188,18 @@ case 1:
    }
     if(pontosjogador > pontospc)
     {
-        printf("Jogador venceu!!");
+        printf("Jogador venceu!! \n");
     }
     else if (pontosjogador < pontospc)
     {
-      printf("Computador venceu!!");
+      printf("Computador venceu!! \n");
     }
     else
     {
-      printf("Empate!!!");
+      printf("Empate!!! \n");
     }
 
    break;
-
 case 2:
 
   printf("###As regras são###\n");
@@ -199,16 +209,17 @@ case 2:
   printf("Se seu valor for maior (menos no caso \nda densidade populacional que deve ser menor que o do pc) você ganha!!\n");
   printf("###############################\n");
   
-     break;  
-case 3:
+    break;
+  case 3:
 
       printf("Saindo do jogo...\n");
-  break;
-default:
+      sair = 1; // encerra o while2
+   break;
+  default:
 
   printf("Opção invalida...");
 
-  break;
-    
+ break;
+}
 }
 }
